@@ -19,7 +19,7 @@ Technology Stack
 ________________________________________
 Installation and Setup
 1. Clone the repository
-git clone https://github.com/eKatsiouri/order_products.git
+git clone https://github.com/eKatsiouri/dashboard_order.git
 cd order_products
 2. Set up the Database
 You will need to set up a database for this project.
