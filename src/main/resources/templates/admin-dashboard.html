@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="container">
+    <h1 class="my-4">Admin Dashboard</h1>
+    <h4>Welcome, <span th:text="${currentUser.username}">Admin</span>!</h4>
+
+    <h3>Order Details</h3>
+    <form method="get" th:action="@{/admin-dashboard}">
+
+        <label for="username">Username:</label>
+        <input type="text" name="username" id="username" th:value="${username}" />
+
+        <label for="email">Email:</label>
+        <input type="text" name="email" id="email" th:value="${email}" />
+        <label for="orderId">Order ID:</label>
+        <input type="number" name="orderId" id="orderId" th:value="${orderId}" />
+
+        <label for="productName">Product Name:</label>
+        <input type="text" name="productName" id="productName" th:value="${productName}" />
+        <button type="submit">Filter</button>
+
+        <a href="/admin-dashboard" class="btn btn-secondary">Reset Filters</a>
+    </form>
+    <div th:if="${error}" class="alert alert-danger" role="alert">
+        <p th:text="${error}"></p>
+    </div>
+
+    <table border="1">
+        <tr>
+            <th>Order ID</th>
+            <th>Status</th>
+            <th>Total Price</th>
+            <th>Order Date</th>
+            <th>Username</th>
+            <th>User Info</th>
+            <th>Products</th>
+        </tr>
+        <tr th:each="order : ${orders}">
+            <td th:text="${order.id}"></td>
+            <td th:text="${order.status}"></td>
+            <td th:text="${order.totalPrice}"></td>
+            <td th:text="${order.orderDate}"></td>
+            <td th:text="${order.user.username}"></td>
+            <td>
+                <ul>
+                    <li th:each="user: ${order.user}">
+                        <span th:text="'Firstname: '+ ${order.user.firstName}"></span><br>
+                        <span th:text="'Lastname: '+ ${order.user.lastName}"></span><br>
+                        <span th:text="'Email: '+ ${order.user.email}"></span><br>
+                        <span th:text="'Phonenumber: '+ ${order.user.phoneNumber}"></span>
+                    </li>
+                </ul>
+            </td>
+            <td>
+                <ul>
+                    <li th:each="orderProduct : ${order.orderProducts}">
+                        <span th:text="'Product: '+${orderProduct.product.name}"></span> <br>
+                        <span th:text="'Quantity: '+ ${orderProduct.quantity}"></span> <br>
+                        <span th:text="'Price: '+ ${orderProduct.priceAtOrderTime}"></span>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+    <div>
+        <a th:href="@{/admin-dashboard(page=${orders.number-1})}" th:if="${orders.hasPrevious()}">Previous</a>
+        <span>Page <span th:text="${orders.number + 1}"></span> of <span th:text="${orders.totalPages}"></span></span>
+        <a th:href="@{/admin-dashboard(page=${orders.number+1})}" th:if="${orders.hasNext()}">Next</a>
+    </div>
+
+    <a href="/login" class="btn btn-danger">Logout</a>
+</div>
+</body>
+</html>
